@@ -7,25 +7,25 @@
 package engine
 
 import (
-	"go-web-template/modules/controller"
-	"go-web-template/modules/middleware"
-	"go-web-template/modules/repository"
-	"go-web-template/modules/service"
-	"go-web-template/modules/util/crypt"
-	"go-web-template/modules/util/jwt"
+    "go-web-template/modules/controller"
+    "go-web-template/modules/middleware"
+    "go-web-template/modules/repository"
+    "go-web-template/modules/service"
+    "go-web-template/modules/util/crypt"
+    "go-web-template/modules/util/jwt"
 )
 
 // Injectors from injector.go:
 
 func InitGinManager() *GinManager {
-	mySQLGorm := repository.MySQLGormProvider()
-	passwordCrypt := crypt.PasswordCryptConstructor()
-	jwtManager := jwt.JwtManagerConstructor()
-	userService := service.UserServiceProvider(mySQLGorm, passwordCrypt, jwtManager)
-	userController := controller.UserControllerProvider(userService)
-	contentService := service.ContentServiceProvider()
-	contentController := controller.ContentControllerProvider(contentService)
-	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
-	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, middlewareMiddleware)
-	return ginManager
+    mySQLGorm := repository.MySQLGormProvider()
+    passwordCrypt := crypt.PasswordCryptConstructor()
+    jwtManager := jwt.JwtManagerConstructor()
+    userService := service.UserServiceProvider(mySQLGorm, passwordCrypt, jwtManager)
+    userController := controller.UserControllerProvider(userService)
+    contentService := service.ContentServiceProvider()
+    contentController := controller.ContentControllerProvider(contentService)
+    middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
+    ginManager := GinManagerProvider(mySQLGorm, userController, contentController, middlewareMiddleware)
+    return ginManager
 }

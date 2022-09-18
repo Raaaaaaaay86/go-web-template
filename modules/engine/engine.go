@@ -1,11 +1,11 @@
 package engine
 
 import (
-	"go-web-template/modules/controller"
-	"go-web-template/modules/middleware"
-	"go-web-template/modules/repository"
+    "go-web-template/modules/controller"
+    "go-web-template/modules/middleware"
+    "go-web-template/modules/repository"
 
-	"github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin"
 )
 
 type IGinManager interface{}
@@ -13,39 +13,39 @@ type IGinManager interface{}
 var instance *gin.Engine
 
 type GinManager struct {
-	MySQLGorm         *repository.MySQLGorm
-	UserController    controller.IUserController
-	ContentController controller.IContentController
-	Middleware        middleware.IMiddleware
+    MySQLGorm         *repository.MySQLGorm
+    UserController    controller.IUserController
+    ContentController controller.IContentController
+    Middleware        middleware.IMiddleware
 }
 
 func (g *GinManager) GetGinEngine() *gin.Engine {
-	if instance == nil {
-		return g.createGin()
-	}
+    if instance == nil {
+        return g.createGin()
+    }
 
-	return instance
+    return instance
 }
 
 func (g *GinManager) createGin() *gin.Engine {
-	if instance == nil {
-		instance = gin.Default()
-	}
+    if instance == nil {
+        instance = gin.Default()
+    }
 
-	g.MySQLGorm.CreateMySQLConnection()
+    g.MySQLGorm.CreateMySQLConnection()
 
-	userRoute := instance.Group("/user")
-	{
-		userRoute.POST("/login", g.UserController.Login)
-		userRoute.POST("/logout", g.UserController.Logout)
-		userRoute.POST("/register", g.UserController.Register)
-		userRoute.POST("/verify", g.UserController.Verify)
-	}
+    userRoute := instance.Group("/user")
+    {
+        userRoute.POST("/login", g.UserController.Login)
+        userRoute.POST("/logout", g.UserController.Logout)
+        userRoute.POST("/register", g.UserController.Register)
+        userRoute.POST("/verify", g.UserController.Verify)
+    }
 
-	contentRoute := instance.Group("/content", g.Middleware.Verify)
-	{
-		contentRoute.GET("/random", g.ContentController.RandomContent)
-	}
+    contentRoute := instance.Group("/content", g.Middleware.Verify)
+    {
+        contentRoute.GET("/random", g.ContentController.RandomContent)
+    }
 
-	return instance
+    return instance
 }
