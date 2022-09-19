@@ -1,0 +1,119 @@
+basePath: /
+definitions:
+  controller.JSONRequest-dto_RegisterData:
+    properties:
+      data:
+        $ref: '#/definitions/dto.RegisterData'
+    type: object
+  dto.LoginData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.RegisterData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      userInfo:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.UserInfo:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phone:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: ray.lin@shoalter.com
+    name: Ray Lin
+  description: This is a template web API project of Go
+  title: Go Web Template
+  version: "1.0"
+paths:
+  /content/random:
+    get:
+      consumes:
+      - application/json
+      description: Before calling the API, you needs to set the JWT in the ```Authorization```
+        header.
+      produces:
+      - text/plain
+      responses: {}
+      summary: Get Random UUID
+      tags:
+      - Testing API
+  /user/login:
+    post:
+      description: If login success, API will return the JWT in the response body
+      parameters:
+      - description: Login email and password
+        in: body
+        name: loginData
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Login
+      tags:
+      - UserService
+  /user/logout:
+    post:
+      consumes:
+      - application/json
+      description: Clear user's ```Authorization``` header
+      produces:
+      - application/json
+      responses: {}
+      summary: Logout
+      tags:
+      - UserService
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new user
+      parameters:
+      - description: Register data
+        in: body
+        name: registerUser
+        required: true
+        schema:
+          $ref: '#/definitions/controller.JSONRequest-dto_RegisterData'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register
+      tags:
+      - UserService
+  /user/verify:
+    get:
+      consumes:
+      - application/json
+      description: Verify user JWT in ```Authorization``` header.
+      produces:
+      - application/json
+      responses: {}
+      summary: Verify
+      tags:
+      - UserService
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

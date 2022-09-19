@@ -1,0 +1,179 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a template web API project of Go",
+        "title": "Go Web Template",
+        "contact": {
+            "name": "Ray Lin",
+            "email": "ray.lin@shoalter.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "paths": {
+        "/content/random": {
+            "get": {
+                "description": "Before calling the API, you needs to set the JWT in the ```Authorization``` header.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "Testing API"
+                ],
+                "summary": "Get Random UUID",
+                "responses": {}
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "If login success, API will return the JWT in the response body",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserService"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Login email and password",
+                        "name": "loginData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "description": "Clear user's ```Authorization``` header",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserService"
+                ],
+                "summary": "Logout",
+                "responses": {}
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Register new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserService"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "description": "Register data",
+                        "name": "registerUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.JSONRequest-dto_RegisterData"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/user/verify": {
+            "get": {
+                "description": "Verify user JWT in ```Authorization``` header.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserService"
+                ],
+                "summary": "Verify",
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "controller.JSONRequest-dto_RegisterData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.RegisterData"
+                }
+            }
+        },
+        "dto.LoginData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "userInfo": {
+                    "$ref": "#/definitions/model.UserInfo"
+                }
+            }
+        },
+        "model.UserInfo": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}
