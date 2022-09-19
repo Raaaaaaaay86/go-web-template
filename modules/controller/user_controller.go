@@ -21,7 +21,7 @@ type UserController struct {
 }
 
 func (uc UserController) Login(ctx *gin.Context) {
-    var jsonData JSONRequest[model.User]
+    var jsonData JSONRequest[dto.LoginData]
 
     if err := ctx.BindJSON(&jsonData); err != nil {
         log.Println(err.Error())
@@ -30,9 +30,9 @@ func (uc UserController) Login(ctx *gin.Context) {
         return
     }
 
-    var loginUser = jsonData.Data
+    var loginData = jsonData.Data
 
-    token, err := uc.UserService.Login(loginUser.Email, loginUser.Password)
+    token, err := uc.UserService.Login(loginData.Email, loginData.Password)
     if err != nil {
         log.Println(err.Error())
         handleError(ctx, http.StatusInternalServerError, err)
