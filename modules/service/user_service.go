@@ -1,16 +1,17 @@
 package service
 
 import (
-    "go-web-template/modules/constant/exception"
-    "go-web-template/modules/constant/role"
-    "go-web-template/modules/model"
-    "go-web-template/modules/repository"
-    "go-web-template/modules/util/crypt"
-    "go-web-template/modules/util/jwt"
-    "log"
+	"go-web-template/modules/constant/exception"
+	"go-web-template/modules/constant/role"
+	"go-web-template/modules/dto"
+	"go-web-template/modules/model"
+	"go-web-template/modules/repository"
+	"go-web-template/modules/util/crypt"
+	"go-web-template/modules/util/jwt"
+	"log"
 
-    "github.com/gin-gonic/gin"
-    "gorm.io/gorm"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type IUserService interface {
@@ -53,8 +54,8 @@ func (us UserService) Logout(ctx *gin.Context) {
     ctx.Request.Header.Set("Authorization", "")
 }
 
-func (us UserService) Register(user model.User) (model.User, error) {
-    if len(user.Email) == 0 || len(user.Password) == 0 {
+func (us UserService) Register(registerData dto.RegisterData) (user model.User, err error) {
+    if len(registerData.Email) == 0 || len(registerData.Password) == 0 {
         return user, exception.ErrInvalidEmailOrPassword
     }
 
@@ -62,7 +63,16 @@ func (us UserService) Register(user model.User) (model.User, error) {
 
     var existCount int64
 
-    db.Model(&user).Where("email = ?", user.Email).Count(&existCount)
+    user = model.User{
+        Email: registerData.Email,
+        UserRole: model.UserRole{
+            Name: role.USER,
+            ID: 0,
+        },
+        UserInfo: registerData.UserInfo,
+    }
+
+    db.Model(&user).Where("email = ?", registerData.Email).Count(&existCount)
 
     if existCount > 0 {
         log.Println("Email already taken")
@@ -70,18 +80,15 @@ func (us UserService) Register(user model.User) (model.User, error) {
         return user, exception.ErrEmailAlreadyTaken
     }
 
-    err := db.Transaction(func(tx *gorm.DB) error {
-        hashedPassword, err := us.CryptTool.Encode(user.Password)
-
+    err = db.Transaction(func(tx *gorm.DB) error {
+        hashedPassword, err := us.CryptTool.Encode(registerData.Password)
         if err != nil {
             log.Panicln("Unexpected error when hashing password")
 
             return err
         }
 
-        user.UserRoleId = 0
-        user.UserRole.Name = role.USER
-        user.Password = string(hashedPassword)
+        user.Password = hashedPassword
 
         if err := tx.Create(&user).Error; err != nil {
             log.Println("Create new account failed")
