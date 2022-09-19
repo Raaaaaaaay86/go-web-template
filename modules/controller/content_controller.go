@@ -17,9 +17,9 @@ type ContentController struct {
 }
 
 func (cc ContentController) RandomContent(ctx *gin.Context) {
-    ctx.String(
-        http.StatusOK,
-        "%s",
-        uuid.NewString(),
-    )
+	ctx.String(
+		http.StatusOK,
+		"%s",
+		cc.ContentService.RandomContent(),
+	)
 }
