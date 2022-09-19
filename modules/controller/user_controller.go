@@ -49,7 +49,7 @@ func (uc UserController) Logout(ctx *gin.Context) {
 }
 
 func (uc UserController) Register(ctx *gin.Context) {
-    var jsonData JSONRequest[model.User]
+    var jsonData JSONRequest[dto.RegisterData]
 
     if err := ctx.BindJSON(&jsonData); err != nil {
         log.Println(err.Error())
