@@ -31,15 +31,6 @@ func (g *GinManager) GetGinEngine() *gin.Engine {
     return instance
 }
 
-// @title           Go Web Template
-// @version         1.0
-// @description     This is a template web project of Go
-
-// @contact.name   Ray Lin
-// @contact.email  ray.lin@shoalter.com
-
-// @host      localhost:8081
-// @BasePath  /
 func (g *GinManager) createGin() *gin.Engine {
     if instance == nil {
         instance = gin.Default()

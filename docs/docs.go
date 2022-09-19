@@ -21,6 +21,11 @@ const docTemplate = `{
     "paths": {
         "/content/random": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Before calling the API, you needs to set the JWT in the ` + "`" + `` + "`" + `` + "`" + `Authorization` + "`" + `` + "`" + `` + "`" + ` header.",
                 "consumes": [
                     "application/json"
@@ -52,7 +57,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginData"
+                            "$ref": "#/definitions/controller.JSONRequest-dto_LoginData"
                         }
                     }
                 ],
@@ -130,6 +135,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.JSONRequest-dto_LoginData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.LoginData"
+                }
+            }
+        },
         "controller.JSONRequest-dto_RegisterData": {
             "type": "object",
             "properties": {
@@ -179,8 +192,10 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

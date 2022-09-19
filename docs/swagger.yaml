@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  controller.JSONRequest-dto_LoginData:
+    properties:
+      data:
+        $ref: '#/definitions/dto.LoginData'
+    type: object
   controller.JSONRequest-dto_RegisterData:
     properties:
       data:
@@ -48,6 +53,8 @@ paths:
       produces:
       - text/plain
       responses: {}
+      security:
+      - ApiKeyAuth: []
       summary: Get Random UUID
       tags:
       - Testing API
@@ -60,7 +67,7 @@ paths:
         name: loginData
         required: true
         schema:
-          $ref: '#/definitions/dto.LoginData'
+          $ref: '#/definitions/controller.JSONRequest-dto_LoginData'
       produces:
       - application/json
       responses:
@@ -114,6 +121,8 @@ paths:
       tags:
       - UserService
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -1,12 +1,12 @@
 package controller
 
 import (
-    "go-web-template/modules/model"
-    "go-web-template/modules/service"
-    "log"
-    "net/http"
+	"go-web-template/modules/dto"
+	"go-web-template/modules/service"
+	"log"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type IUserController interface {
@@ -20,6 +20,16 @@ type UserController struct {
     UserService service.UserService
 }
 
+// Login godoc
+// @Summary      Login
+// @Description  If login success, API will return the JWT in the response body
+// @Tags         UserService
+// @Param loginData body JSONRequest[dto.LoginData] true "Login email and password"
+// @Produce      json
+// @Success      200
+// @Failure      400
+// @Failure      500
+// @Router       /user/login [post]
 func (uc UserController) Login(ctx *gin.Context) {
     var jsonData JSONRequest[dto.LoginData]
 
@@ -43,11 +53,26 @@ func (uc UserController) Login(ctx *gin.Context) {
     handleOK(ctx, token)
 }
 
+// Logout godoc
+// @Summary      Logout
+// @Description  Clear user's ```Authorization``` header
+// @Tags         UserService
+// @Accept       json
+// @Produce      json
+// @Router       /user/logout [post]
 func (uc UserController) Logout(ctx *gin.Context) {
     ctx.Request.Response.Header.Set("Authorization", "")
     handleOK(ctx, nil)
 }
 
+// Register godoc
+// @Summary      Register
+// @Description  Register new user
+// @Tags         UserService
+// @Param registerUser body JSONRequest[dto.RegisterData] true "Register data"
+// @Accept       json
+// @Produce      json
+// @Router       /user/register [post]
 func (uc UserController) Register(ctx *gin.Context) {
     var jsonData JSONRequest[dto.RegisterData]
 
@@ -69,6 +94,13 @@ func (uc UserController) Register(ctx *gin.Context) {
     handleOK(ctx, user)
 }
 
+// Verify godoc
+// @Summary      Verify
+// @Description  Verify user JWT in ```Authorization``` header.
+// @Tags         UserService
+// @Accept       json
+// @Produce      json
+// @Router       /user/verify [get]
 func (uc UserController) Verify(ctx *gin.Context) {
     token := ctx.Request.Header.Get("Authorization")
 
