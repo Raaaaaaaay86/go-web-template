@@ -8,11 +8,11 @@ import (
 )
 
 type IContentController interface {
-    RandomContent(ctx *gin.Context)
+	RandomContent(ctx *gin.Context)
 }
 
 type ContentController struct {
-    ContentService service.IContentService
+	ContentService service.IContentService
 }
 
 // RandomContent godoc

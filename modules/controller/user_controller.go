@@ -10,14 +10,14 @@ import (
 )
 
 type IUserController interface {
-    Login(ctx *gin.Context)
-    Logout(ctx *gin.Context)
-    Register(ctx *gin.Context)
-    Verify(ctx *gin.Context)
+	Login(ctx *gin.Context)
+	Logout(ctx *gin.Context)
+	Register(ctx *gin.Context)
+	Verify(ctx *gin.Context)
 }
 
 type UserController struct {
-    UserService service.UserService
+	UserService service.UserService
 }
 
 // Login godoc
@@ -31,26 +31,26 @@ type UserController struct {
 // @Failure      500
 // @Router       /user/login [post]
 func (uc UserController) Login(ctx *gin.Context) {
-    var jsonData JSONRequest[dto.LoginData]
+	var jsonData JSONRequest[dto.LoginData]
 
-    if err := ctx.BindJSON(&jsonData); err != nil {
-        log.Println(err.Error())
-        handleError(ctx, http.StatusBadRequest, err)
+	if err := ctx.BindJSON(&jsonData); err != nil {
+		log.Println(err.Error())
+		handleError(ctx, http.StatusBadRequest, err)
 
-        return
-    }
+		return
+	}
 
-    var loginData = jsonData.Data
+	var loginData = jsonData.Data
 
-    token, err := uc.UserService.Login(loginData.Email, loginData.Password)
-    if err != nil {
-        log.Println(err.Error())
-        handleError(ctx, http.StatusInternalServerError, err)
+	token, err := uc.UserService.Login(loginData.Email, loginData.Password)
+	if err != nil {
+		log.Println(err.Error())
+		handleError(ctx, http.StatusInternalServerError, err)
 
-        return
-    }
+		return
+	}
 
-    handleOK(ctx, token)
+	handleOK(ctx, token)
 }
 
 // Logout godoc
@@ -61,8 +61,8 @@ func (uc UserController) Login(ctx *gin.Context) {
 // @Produce      json
 // @Router       /user/logout [post]
 func (uc UserController) Logout(ctx *gin.Context) {
-    ctx.Request.Response.Header.Set("Authorization", "")
-    handleOK(ctx, nil)
+	ctx.Request.Response.Header.Set("Authorization", "")
+	handleOK(ctx, nil)
 }
 
 // Register godoc
@@ -74,24 +74,24 @@ func (uc UserController) Logout(ctx *gin.Context) {
 // @Produce      json
 // @Router       /user/register [post]
 func (uc UserController) Register(ctx *gin.Context) {
-    var jsonData JSONRequest[dto.RegisterData]
+	var jsonData JSONRequest[dto.RegisterData]
 
-    if err := ctx.BindJSON(&jsonData); err != nil {
-        log.Println(err.Error())
-        handleError(ctx, http.StatusBadRequest, err)
+	if err := ctx.BindJSON(&jsonData); err != nil {
+		log.Println(err.Error())
+		handleError(ctx, http.StatusBadRequest, err)
 
-        return
-    }
+		return
+	}
 
-    user, err := uc.UserService.Register(jsonData.Data)
-    if err != nil {
-        log.Println(err.Error())
-        handleError(ctx, http.StatusInternalServerError, err)
+	user, err := uc.UserService.Register(jsonData.Data)
+	if err != nil {
+		log.Println(err.Error())
+		handleError(ctx, http.StatusInternalServerError, err)
 
-        return
-    }
+		return
+	}
 
-    handleOK(ctx, user)
+	handleOK(ctx, user)
 }
 
 // Verify godoc
@@ -102,13 +102,13 @@ func (uc UserController) Register(ctx *gin.Context) {
 // @Produce      json
 // @Router       /user/verify [get]
 func (uc UserController) Verify(ctx *gin.Context) {
-    token := ctx.Request.Header.Get("Authorization")
+	token := ctx.Request.Header.Get("Authorization")
 
-    err := uc.UserService.Verify(token)
-    if err != nil {
-        handleError(ctx, http.StatusUnauthorized, err)
-        return
-    }
+	err := uc.UserService.Verify(token)
+	if err != nil {
+		handleError(ctx, http.StatusUnauthorized, err)
+		return
+	}
 
-    handleOK(ctx, nil)
+	handleOK(ctx, nil)
 }

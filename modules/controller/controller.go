@@ -1,33 +1,33 @@
 package controller
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type JSONRequest[T any] struct {
-    Data T
+	Data T
 }
 
 func handleError(c *gin.Context, statusCode int, err error) {
-    c.AbortWithStatusJSON(
-        statusCode,
-        gin.H{
-            "success": false,
-            "status":  statusCode,
-            "error":   err.Error(),
-        },
-    )
+	c.AbortWithStatusJSON(
+		statusCode,
+		gin.H{
+			"success": false,
+			"status":  statusCode,
+			"error":   err.Error(),
+		},
+	)
 }
 
 func handleOK(c *gin.Context, data interface{}) {
-    c.JSON(
-        http.StatusOK,
-        gin.H{
-            "success": true,
-            "status":  http.StatusOK,
-            "data":    data,
-        },
-    )
+	c.JSON(
+		http.StatusOK,
+		gin.H{
+			"success": true,
+			"status":  http.StatusOK,
+			"data":    data,
+		},
+	)
 }
