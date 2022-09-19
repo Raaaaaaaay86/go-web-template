@@ -4,6 +4,9 @@ import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/engine"
 	"go-web-template/modules/repository"
+	"log"
+
+	"github.com/joho/godotenv"
 )
 
 // @title           Go Web Template
@@ -17,6 +20,10 @@ import (
 // @in header
 // @name Authorization
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	ginEngine := engine.InitGinManager().GetGinEngine()
 
 	ginEngine.Run(":8081")

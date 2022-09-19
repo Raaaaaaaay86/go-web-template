@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"os"
 
 	// Un-comment below line to auto-generate table structure in MySQL
 	// "go-web-template/modules/model"
@@ -38,9 +39,18 @@ func (*MySQLGorm) CreateMySQLConnection() *gorm.DB {
 		return mysqlGorm
 	}
 
+	serverDSN := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		os.Getenv("DB_MYSQL_USERNAME"),
+		os.Getenv("DB_MYSQL_PASSWORD"),
+		os.Getenv("DB_MYSQL_HOST"),
+		os.Getenv("DB_MYSQL_PORT"),
+		os.Getenv("DB_MYSQL_SCHEMA"),
+	)
+
 	db, err := gorm.Open(
 		mysql.New(mysql.Config{
-			DSN:                       "root:eee333rr@tcp(127.0.0.1:3307)/web?charset=utf8&parseTime=True&loc=Local",
+			DSN:                       serverDSN,
 			DefaultStringSize:         256,
 			DisableDatetimePrecision:  true,
 			DontSupportRenameIndex:    true,
