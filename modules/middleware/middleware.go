@@ -18,6 +18,12 @@ type Middleware struct {
 func (m Middleware) Verify(ctx *gin.Context) {
     token := ctx.Request.Header.Get("Authorization")
     acceptTokenHead := "Bearer "
+
+    if len(token) == 0 || len(token) <= len(acceptTokenHead) {
+        ctx.AbortWithStatus(http.StatusUnauthorized)
+        return
+    }
+
     tokenHead := token[0:len(acceptTokenHead)]
 
     if tokenHead != acceptTokenHead {
