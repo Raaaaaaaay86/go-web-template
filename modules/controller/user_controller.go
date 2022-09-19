@@ -44,7 +44,7 @@ func (uc UserController) Login(ctx *gin.Context) {
 }
 
 func (uc UserController) Logout(ctx *gin.Context) {
-    ctx.Request.Header.Set("Authorization", "")
+    ctx.Request.Response.Header.Set("Authorization", "")
     handleOK(ctx, nil)
 }
 
