@@ -1,9 +1,13 @@
 package engine
 
 import (
+    _ "go-web-template/docs"
     "go-web-template/modules/controller"
     "go-web-template/modules/middleware"
     "go-web-template/modules/repository"
+
+    swaggerFiles "github.com/swaggo/files"
+    ginSwagger "github.com/swaggo/gin-swagger"
 
     "github.com/gin-gonic/gin"
 )
@@ -27,12 +31,23 @@ func (g *GinManager) GetGinEngine() *gin.Engine {
     return instance
 }
 
+// @title           Go Web Template
+// @version         1.0
+// @description     This is a template web project of Go
+
+// @contact.name   Ray Lin
+// @contact.email  ray.lin@shoalter.com
+
+// @host      localhost:8081
+// @BasePath  /
 func (g *GinManager) createGin() *gin.Engine {
     if instance == nil {
         instance = gin.Default()
     }
 
     g.MySQLGorm.CreateMySQLConnection()
+
+    instance.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
     userRoute := instance.Group("/user")
     {
