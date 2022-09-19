@@ -3,6 +3,9 @@ package repository
 import (
 	"fmt"
 
+	// Un-comment below line to auto-generate table structure in MySQL
+	// "go-web-template/modules/model"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -51,6 +54,9 @@ func (*MySQLGorm) CreateMySQLConnection() *gorm.DB {
 	}
 
 	mysqlGorm = db
+
+	// Un-comment below line to auto-generate table structure in MySQL
+	// mysqlGorm.AutoMigrate(&model.User{}, &model.UserInfo{}, &model.UserRole{})
 
 	return mysqlGorm
 }
