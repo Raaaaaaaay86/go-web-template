@@ -55,5 +55,10 @@ func (g *GinManager) createGin() *gin.Engine {
 		contentRoute.GET("/random", g.ContentController.RandomContent)
 	}
 
+	rabbitMQRoute := instance.Group("/rabbitmq")
+	{
+		rabbitMQRoute.POST("/sendMessage", g.RabbitMQController.SendMessage)
+	}
+
 	return instance
 }
