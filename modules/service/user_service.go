@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/constant/role"
 	"go-web-template/modules/dto"
@@ -60,12 +61,20 @@ func (us UserService) Register(registerData dto.RegisterData) (user model.User, 
 		return user, exception.ErrInvalidEmailOrPassword
 	}
 
-	db := us.MySQLGorm.Get()
+	_, tx := us.UserRepository.FindByEmail(registerData.Email)
+	if tx.RowsAffected > 0 {
+		return user, exception.ErrEmailAlreadyTaken
+	}
 
-	var existCount int64
+	hashedPassword, err := us.CryptTool.Encode(registerData.Password)
+	if err != nil {
+		log.Panicf("Unexpected error when hashing password: %s", err)
+		return user, err
+	}
 
 	user = model.User{
-		Email: registerData.Email,
+		Email:    registerData.Email,
+		Password: hashedPassword,
 		UserRole: model.UserRole{
 			Name: role.USER,
 			ID:   0,
@@ -73,35 +82,9 @@ func (us UserService) Register(registerData dto.RegisterData) (user model.User, 
 		UserInfo: registerData.UserInfo,
 	}
 
-	db.Model(&user).Where("email = ?", registerData.Email).Count(&existCount)
-
-	if existCount > 0 {
-		log.Println("Email already taken")
-
-		return user, exception.ErrEmailAlreadyTaken
-	}
-
-	err = db.Transaction(func(tx *gorm.DB) error {
-		hashedPassword, err := us.CryptTool.Encode(registerData.Password)
-		if err != nil {
-			log.Panicln("Unexpected error when hashing password")
-
-			return err
-		}
-
-		user.Password = hashedPassword
-
-		if err := tx.Create(&user).Error; err != nil {
-			log.Println("Create new account failed")
-
-			return err
-		}
-
-		return nil
-	})
+	err = us.UserRepository.Create(user)
 	if err != nil {
-		log.Printf("Register Failed: %s\n", err)
-
+		log.Printf("Create new User failed: %s\n", err)
 		return user, exception.ErrRegisterFailed
 	}
 
