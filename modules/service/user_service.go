@@ -67,15 +67,11 @@ func (us UserService) Register(registerData dto.RegisterData) (user model.User, 
 		return user, err
 	}
 
-	user = model.User{
-		Email:    registerData.Email,
-		Password: hashedPassword,
-		UserRole: model.UserRole{
-			Name: role.USER,
-			ID:   0,
-		},
-		UserInfo: registerData.UserInfo,
-	}
+	user = us.buildNormalUser(
+		registerData.Email,
+		hashedPassword,
+		registerData.UserInfo,
+	)
 
 	err = us.UserRepository.Create(user)
 	if err != nil {
@@ -100,4 +96,18 @@ func (us UserService) Verify(token string) error {
 	}
 
 	return nil
+}
+
+func (us UserService) buildNormalUser(email, password string, userInfo model.UserInfo) model.User {
+	normalUserRole := model.UserRole{
+		Name: role.USER,
+		ID:   0,
+	}
+
+	return model.User{
+		Email:    email,
+		Password: password,
+		UserRole: normalUserRole,
+		UserInfo: userInfo,
+	}
 }
