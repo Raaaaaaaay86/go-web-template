@@ -11,6 +11,7 @@ import (
 	"go-web-template/modules/middleware"
 	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/rabbitmq"
+	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
 	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
@@ -27,7 +28,8 @@ func InitGinManager() *GinManager {
 	mySQLGorm := mysql.MySQLGormProvider()
 	passwordCrypt := crypt.PasswordCryptConstructor()
 	jwtManager := jwt.JwtManagerConstructor()
-	userService := service.UserServiceProvider(mySQLGorm, passwordCrypt, jwtManager)
+	userRepository := repository.UserRepositoryProvider(mySQLGorm)
+	userService := service.UserServiceProvider(mySQLGorm, passwordCrypt, jwtManager, userRepository)
 	userController := controller.UserControllerProvider(userService)
 	contentService := service.ContentServiceProvider()
 	contentController := controller.ContentControllerProvider(contentService)
