@@ -57,7 +57,7 @@ paths:
       - ApiKeyAuth: []
       summary: Get Random UUID
       tags:
-      - Testing API
+      - Secured API
   /user/login:
     post:
       description: If login success, API will return the JWT in the response body

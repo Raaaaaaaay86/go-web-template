@@ -34,7 +34,7 @@ const docTemplate = `{
                     "text/plain"
                 ],
                 "tags": [
-                    "Testing API"
+                    "Secured API"
                 ],
                 "summary": "Get Random UUID",
                 "responses": {}
