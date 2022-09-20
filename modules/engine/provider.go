@@ -34,7 +34,6 @@ func GinManagerProvider(
 	contentController controller.IContentController,
 	rabbitMQController controller.IRabbitMQController,
 	middleware middleware.IMiddleware,
-	rabbitmqManager rabbitmq.IRabbitMQManager,
 ) *GinManager {
 	return &GinManager{
 		MySQLGorm:          mysqlOrm,
@@ -42,6 +41,5 @@ func GinManagerProvider(
 		UserController:     userController,
 		ContentController:  contentController,
 		RabbitMQController: rabbitMQController,
-		RabbitMQManager:    rabbitMQController,
 	}
 }

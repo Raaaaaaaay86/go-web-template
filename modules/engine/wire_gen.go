@@ -38,6 +38,6 @@ func InitGinManager() *GinManager {
 	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager, checker)
 	rabbitMQController := controller.RabbitMQControllerProvider(rabbitMQService)
 	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
-	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, rabbitMQController, middlewareMiddleware, rabbitMQManager)
+	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, rabbitMQController, middlewareMiddleware)
 	return ginManager
 }
