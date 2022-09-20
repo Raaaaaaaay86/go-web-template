@@ -6,6 +6,7 @@ import (
 	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
+	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
 
@@ -22,6 +23,7 @@ var GinManagerSet = wire.NewSet(
 	jwt.JwtManagerSet,
 	middleware.MiddlewareSet,
 	rabbitmq.RabbitMQSet,
+	check.CheckerProvider,
 )
 
 func GinManagerProvider(

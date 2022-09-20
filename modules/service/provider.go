@@ -3,6 +3,7 @@ package service
 import (
 	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/repository"
+	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
 
@@ -50,8 +51,9 @@ var rabbitMQServiceSet = wire.NewSet(
 	RabbitMQServiceProvider,
 )
 
-func RabbitMQServiceProvider(rabbitMQManager rabbitmq.IRabbitMQManager) RabbitMQService {
+func RabbitMQServiceProvider(rabbitMQManager rabbitmq.IRabbitMQManager, checker check.Checker) RabbitMQService {
 	return RabbitMQService{
 		RabbitMQManager: rabbitMQManager,
+		Checker: checker,
 	}
 }
