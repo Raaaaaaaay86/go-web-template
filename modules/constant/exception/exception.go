@@ -13,5 +13,6 @@ var (
 	ErrInvalidJWT                     = errors.New("invalid JWT")
 	ErrDeclareRabbitMQExchangerFailed = errors.New("declare RabbitMQ exchanger failed")
 	ErrDeclareRabbitMQQueueFailed     = errors.New("declare RabbitMQ queue failed")
-	ErrPublishRabbitMQMessageFailed     = errors.New("publish RabbitMQ message failed")
+	ErrPublishRabbitMQMessageFailed   = errors.New("publish RabbitMQ message failed")
+	ErrInvalidData                    = errors.New("invalid data format")
 )
