@@ -2,9 +2,9 @@ package engine
 
 import (
 	"go-web-template/modules/controller"
+	"go-web-template/modules/gorm/mysql"
 	"go-web-template/modules/middleware"
 	"go-web-template/modules/rabbitmq"
-	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
 	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
@@ -18,7 +18,7 @@ var GinManagerSet = wire.NewSet(
 	GinManagerProvider,
 	controller.ControllerWireSet,
 	service.ServiceSet,
-	repository.MySQLOrmSet,
+	mysql.MySQLOrmSet,
 	crypt.PasswordCryptSet,
 	jwt.JwtManagerSet,
 	middleware.MiddlewareSet,
@@ -27,7 +27,7 @@ var GinManagerSet = wire.NewSet(
 )
 
 func GinManagerProvider(
-	mysqlOrm *repository.MySQLGorm,
+	mysqlOrm *mysql.MySQLGorm,
 	userController controller.IUserController,
 	contentController controller.IContentController,
 	rabbitMQController controller.IRabbitMQController,

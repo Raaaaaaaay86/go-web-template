@@ -3,7 +3,7 @@ package main
 import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/engine"
-	"go-web-template/modules/repository"
+	"go-web-template/modules/gorm/mysql"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -28,5 +28,5 @@ func main() {
 
 	ginEngine.Run(":8081")
 
-	defer repository.CloseMySQL()
+	defer mysql.CloseMySQL()
 }

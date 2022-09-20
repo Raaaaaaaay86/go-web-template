@@ -3,8 +3,8 @@ package engine
 import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/controller"
+	"go-web-template/modules/gorm/mysql"
 	"go-web-template/modules/middleware"
-	"go-web-template/modules/repository"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -17,12 +17,12 @@ type IGinManager interface{}
 var instance *gin.Engine
 
 type GinManager struct {
-	MySQLGorm         *repository.MySQLGorm
-	UserController    controller.IUserController
-	ContentController controller.IContentController
+	MySQLGorm          *mysql.MySQLGorm
+	UserController     controller.IUserController
+	ContentController  controller.IContentController
 	RabbitMQController controller.IRabbitMQController
-	Middleware        middleware.IMiddleware
-	RabbitMQManager controller.IRabbitMQController
+	Middleware         middleware.IMiddleware
+	RabbitMQManager    controller.IRabbitMQController
 }
 
 func (g *GinManager) GetGinEngine() *gin.Engine {

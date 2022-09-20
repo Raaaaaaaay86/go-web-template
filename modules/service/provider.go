@@ -2,7 +2,7 @@ package service
 
 import (
 	"go-web-template/modules/rabbitmq"
-	"go-web-template/modules/repository"
+	"go-web-template/modules/gorm/mysql"
 	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
@@ -24,7 +24,7 @@ var userServiceSet = wire.NewSet(
 )
 
 func UserServiceProvider(
-	mySQLGorm *repository.MySQLGorm,
+	mySQLGorm *mysql.MySQLGorm,
 	cryptTool crypt.PasswordCrypt,
 	jwtManager jwt.JwtManager,
 ) UserService {
