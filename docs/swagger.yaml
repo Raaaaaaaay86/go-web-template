@@ -10,6 +10,11 @@ definitions:
       data:
         $ref: '#/definitions/dto.RegisterData'
     type: object
+  controller.JSONRequest-dto_SendMessageData:
+    properties:
+      data:
+        $ref: '#/definitions/dto.SendMessageData'
+    type: object
   dto.LoginData:
     properties:
       email:
@@ -25,6 +30,13 @@ definitions:
         type: string
       userInfo:
         $ref: '#/definitions/model.UserInfo'
+    type: object
+  dto.SendMessageData:
+    properties:
+      message:
+        type: string
+      topic:
+        type: string
     type: object
   model.UserInfo:
     properties:
@@ -58,6 +70,24 @@ paths:
       summary: Get Random UUID
       tags:
       - Secured API
+  /rabbitmq/sendMessage:
+    post:
+      consumes:
+      - application/json
+      description: This message sending mode is "topic"
+      parameters:
+      - description: Message content
+        in: body
+        name: sendMessageData
+        required: true
+        schema:
+          $ref: '#/definitions/controller.JSONRequest-dto_SendMessageData'
+      produces:
+      - text/plain
+      responses: {}
+      summary: Send RabbitMQ message to topic
+      tags:
+      - RabbitMQ
   /user/login:
     post:
       description: If login success, API will return the JWT in the response body

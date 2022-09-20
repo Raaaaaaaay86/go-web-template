@@ -40,6 +40,33 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/rabbitmq/sendMessage": {
+            "post": {
+                "description": "This message sending mode is \"topic\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "RabbitMQ"
+                ],
+                "summary": "Send RabbitMQ message to topic",
+                "parameters": [
+                    {
+                        "description": "Message content",
+                        "name": "sendMessageData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.JSONRequest-dto_SendMessageData"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/user/login": {
             "post": {
                 "description": "If login success, API will return the JWT in the response body",
@@ -151,6 +178,14 @@ const docTemplate = `{
                 }
             }
         },
+        "controller.JSONRequest-dto_SendMessageData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.SendMessageData"
+                }
+            }
+        },
         "dto.LoginData": {
             "type": "object",
             "properties": {
@@ -173,6 +208,17 @@ const docTemplate = `{
                 },
                 "userInfo": {
                     "$ref": "#/definitions/model.UserInfo"
+                }
+            }
+        },
+        "dto.SendMessageData": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "topic": {
+                    "type": "string"
                 }
             }
         },
