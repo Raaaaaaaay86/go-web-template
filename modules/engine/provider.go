@@ -30,10 +30,10 @@ var GinManagerSet = wire.NewSet(
 
 func GinManagerProvider(
 	mysqlOrm *mysql.MySQLGorm,
+	middleware middleware.IMiddleware,
 	userController controller.IUserController,
 	contentController controller.IContentController,
 	rabbitMQController controller.IRabbitMQController,
-	middleware middleware.IMiddleware,
 ) *GinManager {
 	return &GinManager{
 		MySQLGorm:          mysqlOrm,

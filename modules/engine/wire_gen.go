@@ -26,8 +26,9 @@ import (
 
 func InitGinManager() *GinManager {
 	mySQLGorm := mysql.MySQLGormProvider()
-	passwordCrypt := crypt.PasswordCryptConstructor()
 	jwtManager := jwt.JwtManagerConstructor()
+	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
+	passwordCrypt := crypt.PasswordCryptConstructor()
 	userRepository := repository.UserRepositoryProvider(mySQLGorm)
 	userService := service.UserServiceProvider(passwordCrypt, jwtManager, userRepository)
 	userController := controller.UserControllerProvider(userService)
@@ -37,7 +38,6 @@ func InitGinManager() *GinManager {
 	checker := check.CheckerProvider()
 	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager, checker)
 	rabbitMQController := controller.RabbitMQControllerProvider(rabbitMQService)
-	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
-	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, rabbitMQController, middlewareMiddleware)
+	ginManager := GinManagerProvider(mySQLGorm, middlewareMiddleware, userController, contentController, rabbitMQController)
 	return ginManager
 }
