@@ -4,6 +4,7 @@ import (
 	"context"
 	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/rabbitmq"
+	"go-web-template/modules/util/check"
 	"log"
 	"time"
 
@@ -16,9 +17,19 @@ type IRabbitMQService interface {
 
 type RabbitMQService struct {
 	RabbitMQManager rabbitmq.IRabbitMQManager
+	Checker         check.Checker
 }
 
 func (rs RabbitMQService) SendMessage(topic string, message string) error {
+	if err := rs.Checker.String(
+		[]string{topic, message},
+		func(str string) bool {
+			return len(str) != 0
+		},
+	); err != nil {
+		return exception.ErrInvalidData
+	}
+
 	channel := rs.RabbitMQManager.GetChannel()
 	exchangerName := "random_exchanger_name"
 
