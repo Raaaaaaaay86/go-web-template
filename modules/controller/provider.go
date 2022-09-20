@@ -10,6 +10,7 @@ import (
 var ControllerWireSet = wire.NewSet(
 	userControllerWireSet,
 	contentControllerSet,
+	rabbitMQControllerSet,
 )
 
 // UserController
@@ -33,5 +34,17 @@ var contentControllerSet = wire.NewSet(
 func ContentControllerProvider(contentService service.IContentService) ContentController {
 	return ContentController{
 		ContentService: contentService,
+	}
+}
+
+// RabbitMQController
+var rabbitMQControllerSet = wire.NewSet(
+	wire.Bind(new(IRabbitMQController), new(RabbitMQController)),
+	RabbitMQControllerProvider,
+)
+
+func RabbitMQControllerProvider(rabbitMQService service.IRabbitMQService) RabbitMQController {
+	return RabbitMQController{
+		RabbitMQService: rabbitMQService,
 	}
 }
