@@ -70,7 +70,7 @@ You can change the setting with you favor.
 
 ## How about the table structure?
 
-I intentionally not include the ```dump.sql`` in this project. Go check  
+I intentionally not include the ```dump.sql``` in this project. Go check  
 ```mysql.go``` ```line:8``` and ```line:69```. Open it when you first run  
 the project. GORM will auto generate the table structure when it execute  
 ```gorm.AutoMigrate()```.
