@@ -20,7 +20,9 @@ type GinManager struct {
 	MySQLGorm         *repository.MySQLGorm
 	UserController    controller.IUserController
 	ContentController controller.IContentController
+	RabbitMQController controller.IRabbitMQController
 	Middleware        middleware.IMiddleware
+	RabbitMQManager controller.IRabbitMQController
 }
 
 func (g *GinManager) GetGinEngine() *gin.Engine {
