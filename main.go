@@ -3,7 +3,7 @@ package main
 import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/engine"
-	"go-web-template/modules/gorm/mysql"
+	"go-web-template/modules/orm/mysql"
 	"log"
 
 	"github.com/joho/godotenv"

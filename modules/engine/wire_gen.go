@@ -8,8 +8,8 @@ package engine
 
 import (
 	"go-web-template/modules/controller"
-	"go-web-template/modules/gorm/mysql"
 	"go-web-template/modules/middleware"
+	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/service"
 	"go-web-template/modules/util/check"

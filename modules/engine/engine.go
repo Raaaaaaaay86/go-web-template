@@ -3,7 +3,7 @@ package engine
 import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/controller"
-	"go-web-template/modules/gorm/mysql"
+	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/middleware"
 
 	swaggerFiles "github.com/swaggo/files"

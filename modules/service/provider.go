@@ -2,7 +2,7 @@ package service
 
 import (
 	"go-web-template/modules/rabbitmq"
-	"go-web-template/modules/gorm/mysql"
+	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"

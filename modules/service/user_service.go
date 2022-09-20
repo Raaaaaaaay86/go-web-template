@@ -5,7 +5,7 @@ import (
 	"go-web-template/modules/constant/role"
 	"go-web-template/modules/dto"
 	"go-web-template/modules/model"
-	"go-web-template/modules/gorm/mysql"
+	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
 	"log"
