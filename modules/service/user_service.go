@@ -29,11 +29,7 @@ type UserService struct {
 }
 
 func (us UserService) Login(email, password string) (token string, err error) {
-	db := us.MySQLGorm.Get()
-
-	var existUser model.User
-
-	tx := db.Where("email = ?", email).First(&existUser)
+	existUser, tx := us.UserRepository.FindByEmail(email)
 	if tx.Error != nil {
 		return "", tx.Error
 	}
