@@ -15,6 +15,7 @@ require (
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
+	github.com/rabbitmq/amqp091-go v1.5.0 // indirect
 	github.com/swaggo/gin-swagger v1.5.3 // indirect
 	github.com/swaggo/swag v1.8.1 // indirect
 	golang.org/x/tools v0.1.7 // indirect
