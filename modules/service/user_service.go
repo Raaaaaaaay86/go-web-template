@@ -5,7 +5,6 @@ import (
 	"go-web-template/modules/constant/role"
 	"go-web-template/modules/dto"
 	"go-web-template/modules/model"
-	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
@@ -22,7 +21,6 @@ type IUserService interface {
 }
 
 type UserService struct {
-	MySQLGorm      *mysql.MySQLGorm
 	CryptTool      crypt.PasswordCrypt
 	JwtManager     jwt.JwtManager
 	UserRepository repository.UserRepository

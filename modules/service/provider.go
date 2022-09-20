@@ -1,7 +1,6 @@
 package service
 
 import (
-	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/util/check"
@@ -25,15 +24,13 @@ var userServiceSet = wire.NewSet(
 )
 
 func UserServiceProvider(
-	mySQLGorm *mysql.MySQLGorm,
 	cryptTool crypt.PasswordCrypt,
 	jwtManager jwt.JwtManager,
 	userRepository repository.UserRepository,
 ) UserService {
 	return UserService{
-		MySQLGorm:  mySQLGorm,
-		CryptTool:  cryptTool,
-		JwtManager: jwtManager,
+		CryptTool:      cryptTool,
+		JwtManager:     jwtManager,
 		UserRepository: userRepository,
 	}
 }
@@ -57,6 +54,6 @@ var rabbitMQServiceSet = wire.NewSet(
 func RabbitMQServiceProvider(rabbitMQManager rabbitmq.IRabbitMQManager, checker check.Checker) RabbitMQService {
 	return RabbitMQService{
 		RabbitMQManager: rabbitMQManager,
-		Checker: checker,
+		Checker:         checker,
 	}
 }
