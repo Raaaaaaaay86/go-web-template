@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/constant/role"
 	"go-web-template/modules/dto"
