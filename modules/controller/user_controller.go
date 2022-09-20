@@ -17,7 +17,7 @@ type IUserController interface {
 }
 
 type UserController struct {
-	UserService service.UserService
+	UserService service.IUserService
 }
 
 // Login godoc

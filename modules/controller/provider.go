@@ -19,7 +19,7 @@ var userControllerWireSet = wire.NewSet(
 	UserControllerProvider,
 )
 
-func UserControllerProvider(userService service.UserService) UserController {
+func UserControllerProvider(userService service.IUserService) UserController {
 	return UserController{
 		UserService: userService,
 	}
