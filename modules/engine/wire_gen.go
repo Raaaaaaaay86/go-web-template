@@ -9,6 +9,7 @@ package engine
 import (
 	"go-web-template/modules/controller"
 	"go-web-template/modules/middleware"
+	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
 	"go-web-template/modules/util/crypt"
@@ -29,7 +30,10 @@ func InitGinManager() *GinManager {
 	userController := controller.UserControllerProvider(userService)
 	contentService := service.ContentServiceProvider()
 	contentController := controller.ContentControllerProvider(contentService)
+	rabbitMQManager := rabbitmq.RabbitMQManagerProvider()
+	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager)
+	rabbitMQController := controller.RabbitMQControllerProvider(rabbitMQService)
 	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
-	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, middlewareMiddleware)
+	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, rabbitMQController, middlewareMiddleware, rabbitMQManager)
 	return ginManager
 }
