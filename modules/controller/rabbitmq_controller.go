@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/dto"
 	"go-web-template/modules/service"
 	"log"
@@ -38,7 +39,13 @@ func (rc RabbitMQController) SendMessage(ctx *gin.Context) {
 	err := rc.RabbitMQService.SendMessage(jsonRequest.Data.Topic, jsonRequest.Data.Message)
 	if err != nil {
 		log.Println(err.Error())
-		handleError(ctx, http.StatusInternalServerError, err)
+
+		switch err {
+		case exception.ErrInvalidData:
+			handleError(ctx, http.StatusBadRequest, err)
+		default:
+			handleError(ctx, http.StatusInternalServerError, err)
+		}
 
 		return
 	}
