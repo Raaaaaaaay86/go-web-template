@@ -29,7 +29,7 @@ func InitGinManager() *GinManager {
 	passwordCrypt := crypt.PasswordCryptConstructor()
 	jwtManager := jwt.JwtManagerConstructor()
 	userRepository := repository.UserRepositoryProvider(mySQLGorm)
-	userService := service.UserServiceProvider(mySQLGorm, passwordCrypt, jwtManager, userRepository)
+	userService := service.UserServiceProvider(passwordCrypt, jwtManager, userRepository)
 	userController := controller.UserControllerProvider(userService)
 	contentService := service.ContentServiceProvider()
 	contentController := controller.ContentControllerProvider(contentService)
