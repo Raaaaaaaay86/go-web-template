@@ -12,6 +12,7 @@ import (
 	"go-web-template/modules/rabbitmq"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
+	"go-web-template/modules/util/check"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
 )
@@ -31,7 +32,8 @@ func InitGinManager() *GinManager {
 	contentService := service.ContentServiceProvider()
 	contentController := controller.ContentControllerProvider(contentService)
 	rabbitMQManager := rabbitmq.RabbitMQManagerProvider()
-	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager)
+	checker := check.CheckerProvider()
+	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager, checker)
 	rabbitMQController := controller.RabbitMQControllerProvider(rabbitMQService)
 	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
 	ginManager := GinManagerProvider(mySQLGorm, userController, contentController, rabbitMQController, middlewareMiddleware, rabbitMQManager)
