@@ -17,7 +17,7 @@ import (
 type IUserService interface {
 	Login(email, password string) (token string, err error)
 	Logout(ctx *gin.Context)
-	Register(user model.User) (model.User, error)
+	Register(registerData dto.RegisterData) (model.User, error)
 	Verify(token string) error
 }
 
