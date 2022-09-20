@@ -6,12 +6,12 @@ import (
 	"go-web-template/modules/dto"
 	"go-web-template/modules/model"
 	"go-web-template/modules/orm/mysql"
+	"go-web-template/modules/repository"
 	"go-web-template/modules/util/crypt"
 	"go-web-template/modules/util/jwt"
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type IUserService interface {
@@ -22,9 +22,10 @@ type IUserService interface {
 }
 
 type UserService struct {
-	MySQLGorm  *mysql.MySQLGorm
-	CryptTool  crypt.PasswordCrypt
-	JwtManager jwt.JwtManager
+	MySQLGorm      *mysql.MySQLGorm
+	CryptTool      crypt.PasswordCrypt
+	JwtManager     jwt.JwtManager
+	UserRepository repository.UserRepository
 }
 
 func (us UserService) Login(email, password string) (token string, err error) {
