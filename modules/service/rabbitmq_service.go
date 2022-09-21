@@ -8,6 +8,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/google/wire"
 	"github.com/rabbitmq/amqp091-go"
 )
 
@@ -18,6 +19,18 @@ type IRabbitMQService interface {
 type RabbitMQService struct {
 	RabbitMQManager rabbitmq.IRabbitMQManager
 	Checker         check.Checker
+}
+
+var rabbitMQServiceSet = wire.NewSet(
+	wire.Bind(new(IRabbitMQService), new(RabbitMQService)),
+	RabbitMQServiceProvider,
+)
+
+func RabbitMQServiceProvider(rabbitMQManager rabbitmq.IRabbitMQManager, checker check.Checker) RabbitMQService {
+	return RabbitMQService{
+		RabbitMQManager: rabbitMQManager,
+		Checker:         checker,
+	}
 }
 
 func (rs RabbitMQService) SendMessage(topic string, message string) error {

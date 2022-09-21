@@ -1,28 +1,7 @@
 package rabbitmq
 
-import (
-	"fmt"
-	"os"
+import "github.com/google/wire"
 
-	"github.com/google/wire"
+var RabbitMQWireModuleSet = wire.NewSet(
+	RabbitMQSet,
 )
-
-// RabbitMQManager
-var RabbitMQSet = wire.NewSet(
-	wire.Bind(new(IRabbitMQManager), new(RabbitMQManager)),
-	RabbitMQManagerProvider,
-)
-
-func RabbitMQManagerProvider() RabbitMQManager {
-	url := fmt.Sprintf(
-		"amqp://%s:%s@%s:%s/",
-		os.Getenv("RABBIT_MQ_USERNAME"),
-		os.Getenv("RABBIT_MQ_PASSWORD"),
-		os.Getenv("RABBIT_MQ_HOST"),
-		os.Getenv("RABBIT_MQ_PORT"),
-	)
-
-	return RabbitMQManager{
-		URL: url,
-	}
-}

@@ -1,6 +1,7 @@
 package crypt
 
 import (
+	"github.com/google/wire"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -10,6 +11,15 @@ type IPasswordCrypt interface {
 }
 
 type PasswordCrypt struct{}
+
+var PasswordCryptWireSet = wire.NewSet(
+	wire.Bind(new(IPasswordCrypt), new(PasswordCrypt)),
+	PasswordCryptProvider,
+)
+
+func PasswordCryptProvider() PasswordCrypt {
+	return PasswordCrypt{}
+}
 
 func (pc PasswordCrypt) Encode(password string) (encoded string, err error) {
 	encodedBytes, err := bcrypt.GenerateFromPassword(

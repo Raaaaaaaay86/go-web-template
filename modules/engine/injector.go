@@ -6,5 +6,5 @@ package engine
 import "github.com/google/wire"
 
 func InitGinManager() *GinManager {
-	panic(wire.Build(GinManagerSet))
+	panic(wire.Build(GinManagerModuleWireSet))
 }

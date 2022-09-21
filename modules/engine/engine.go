@@ -4,8 +4,14 @@ import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/controller"
 	"go-web-template/modules/middleware"
+	"go-web-template/modules/orm"
 	"go-web-template/modules/orm/mysql"
+	"go-web-template/modules/rabbitmq"
+	"go-web-template/modules/repository"
+	"go-web-template/modules/service"
+	"go-web-template/modules/util"
 
+	"github.com/google/wire"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -22,6 +28,34 @@ type GinManager struct {
 	ContentController  controller.IContentController
 	RabbitMQController controller.IRabbitMQController
 	Middleware         middleware.IMiddleware
+}
+
+var GinManagerWireSet = wire.NewSet(
+	wire.Bind(new(IGinManager), new(*GinManager)),
+	GinManagerProvider,
+	controller.ControllerWireModuleSet,
+	service.ServiceWireModuleSet,
+	orm.OrmWireModuleSet,
+	util.UtilWireModuleSet,
+	rabbitmq.RabbitMQWireModuleSet,
+	repository.RepositoryWireModuleSet,
+	middleware.MiddlewareWireModuleSet,
+)
+
+func GinManagerProvider(
+	mysqlOrm *mysql.MySQLGorm,
+	middleware middleware.IMiddleware,
+	userController controller.IUserController,
+	contentController controller.IContentController,
+	rabbitMQController controller.IRabbitMQController,
+) *GinManager {
+	return &GinManager{
+		MySQLGorm:          mysqlOrm,
+		Middleware:         middleware,
+		UserController:     userController,
+		ContentController:  contentController,
+		RabbitMQController: rabbitMQController,
+	}
 }
 
 func (g *GinManager) GetGinEngine() *gin.Engine {

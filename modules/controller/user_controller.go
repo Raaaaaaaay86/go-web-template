@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 )
 
 type IUserController interface {
@@ -18,6 +19,17 @@ type IUserController interface {
 
 type UserController struct {
 	UserService service.IUserService
+}
+
+var userControllerWireSet = wire.NewSet(
+	wire.Bind(new(IUserController), new(UserController)),
+	UserControllerProvider,
+)
+
+func UserControllerProvider(userService service.IUserService) UserController {
+	return UserController{
+		UserService: userService,
+	}
 }
 
 // Login godoc

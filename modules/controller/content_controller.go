@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 )
 
 type IContentController interface {
@@ -13,6 +14,17 @@ type IContentController interface {
 
 type ContentController struct {
 	ContentService service.IContentService
+}
+
+var contentControllerSet = wire.NewSet(
+	wire.Bind(new(IContentController), new(ContentController)),
+	ContentControllerProvider,
+)
+
+func ContentControllerProvider(contentService service.IContentService) ContentController {
+	return ContentController{
+		ContentService: contentService,
+	}
 }
 
 // RandomContent godoc

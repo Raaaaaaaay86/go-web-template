@@ -1,59 +1,12 @@
 package service
 
 import (
-	"go-web-template/modules/rabbitmq"
-	"go-web-template/modules/repository"
-	"go-web-template/modules/util/check"
-	"go-web-template/modules/util/crypt"
-	"go-web-template/modules/util/jwt"
-
 	"github.com/google/wire"
 )
 
 // All Services
-var ServiceSet = wire.NewSet(
+var ServiceWireModuleSet = wire.NewSet(
 	userServiceSet,
 	contentServiceSet,
 	rabbitMQServiceSet,
 )
-
-// UserService
-var userServiceSet = wire.NewSet(
-	wire.Bind(new(IUserService), new(UserService)),
-	UserServiceProvider,
-)
-
-func UserServiceProvider(
-	cryptTool crypt.PasswordCrypt,
-	jwtManager jwt.JwtManager,
-	userRepository repository.UserRepository,
-) UserService {
-	return UserService{
-		CryptTool:      cryptTool,
-		JwtManager:     jwtManager,
-		UserRepository: userRepository,
-	}
-}
-
-// ContentService
-var contentServiceSet = wire.NewSet(
-	wire.Bind(new(IContentService), new(ContentService)),
-	ContentServiceProvider,
-)
-
-func ContentServiceProvider() ContentService {
-	return ContentService{}
-}
-
-// RabbitMQService
-var rabbitMQServiceSet = wire.NewSet(
-	wire.Bind(new(IRabbitMQService), new(RabbitMQService)),
-	RabbitMQServiceProvider,
-)
-
-func RabbitMQServiceProvider(rabbitMQManager rabbitmq.IRabbitMQManager, checker check.Checker) RabbitMQService {
-	return RabbitMQService{
-		RabbitMQManager: rabbitMQManager,
-		Checker:         checker,
-	}
-}

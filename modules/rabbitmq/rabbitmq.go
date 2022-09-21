@@ -1,20 +1,44 @@
 package rabbitmq
 
-import amqp "github.com/rabbitmq/amqp091-go"
+import (
+	"fmt"
+	"os"
 
+	"github.com/google/wire"
+	amqp "github.com/rabbitmq/amqp091-go"
+)
 
 var sharedConnection *amqp.Connection
 
 var sharedChannel *amqp.Channel
 
-type IRabbitMQManager interface{
-	GetChannel()  *amqp.Channel
+type IRabbitMQManager interface {
+	GetChannel() *amqp.Channel
 	createConnection() *amqp.Connection
 	openNewChannel(conn *amqp.Connection) *amqp.Channel
 }
 
 type RabbitMQManager struct {
 	URL string
+}
+
+var RabbitMQSet = wire.NewSet(
+	wire.Bind(new(IRabbitMQManager), new(RabbitMQManager)),
+	RabbitMQManagerProvider,
+)
+
+func RabbitMQManagerProvider() RabbitMQManager {
+	url := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		os.Getenv("RABBIT_MQ_USERNAME"),
+		os.Getenv("RABBIT_MQ_PASSWORD"),
+		os.Getenv("RABBIT_MQ_HOST"),
+		os.Getenv("RABBIT_MQ_PORT"),
+	)
+
+	return RabbitMQManager{
+		URL: url,
+	}
 }
 
 func (rm RabbitMQManager) GetChannel() *amqp.Channel {
@@ -30,7 +54,7 @@ func (rm RabbitMQManager) GetChannel() *amqp.Channel {
 func (rm RabbitMQManager) createConnection() *amqp.Connection {
 	if sharedConnection != nil && !sharedChannel.IsClosed() {
 		sharedChannel.Close()
-	} 
+	}
 
 	conn, err := amqp.Dial(rm.URL)
 	if err != nil {
@@ -52,4 +76,3 @@ func (rm RabbitMQManager) openNewChannel(conn *amqp.Connection) *amqp.Channel {
 
 	return channel
 }
-

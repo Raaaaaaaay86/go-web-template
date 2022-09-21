@@ -2,10 +2,12 @@ package mysql
 
 import (
 	"fmt"
+	"os"
 
 	// Un-comment below line to auto-generate table structure in MySQL
 	// "go-web-template/modules/model"
 
+	"github.com/google/wire"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -15,14 +17,29 @@ type IMySQLGorm interface {
 	CreateMySQLConnection() *gorm.DB
 }
 
-var mysqlGorm *gorm.DB
-
 type MySQLGorm struct {
 	DB_MYSQL_USERNAME string
 	DB_MYSQL_PASSWORD string
 	DB_MYSQL_HOST     string
 	DB_MYSQL_PORT     string
 	DB_MYSQL_SCHEMA   string
+}
+
+var mysqlGorm *gorm.DB
+
+var MySQLOrmSet = wire.NewSet(
+	wire.Bind(new(IMySQLGorm), new(*MySQLGorm)),
+	MySQLGormProvider,
+)
+
+func MySQLGormProvider() *MySQLGorm {
+	return &MySQLGorm{
+		DB_MYSQL_USERNAME: os.Getenv("DB_MYSQL_USERNAME"),
+		DB_MYSQL_PASSWORD: os.Getenv("DB_MYSQL_PASSWORD"),
+		DB_MYSQL_HOST:     os.Getenv("DB_MYSQL_HOST"),
+		DB_MYSQL_PORT:     os.Getenv("DB_MYSQL_PORT"),
+		DB_MYSQL_SCHEMA:   os.Getenv("DB_MYSQL_SCHEMA"),
+	}
 }
 
 func CloseMySQL() {

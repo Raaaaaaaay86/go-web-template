@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 )
 
 type IRabbitMQController interface {
@@ -16,6 +17,17 @@ type IRabbitMQController interface {
 
 type RabbitMQController struct {
 	RabbitMQService service.IRabbitMQService
+}
+
+var rabbitMQControllerSet = wire.NewSet(
+	wire.Bind(new(IRabbitMQController), new(RabbitMQController)),
+	RabbitMQControllerProvider,
+)
+
+func RabbitMQControllerProvider(rabbitMQService service.IRabbitMQService) RabbitMQController {
+	return RabbitMQController{
+		RabbitMQService: rabbitMQService,
+	}
 }
 
 // RandomContent godoc

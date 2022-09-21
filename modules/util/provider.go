@@ -8,7 +8,7 @@ import (
 	"github.com/google/wire"
 )
 
-var UtilWireSet = wire.NewSet(
+var UtilWireModuleSet = wire.NewSet(
 	jwt.JwtManagerWireSet,
 	crypt.PasswordCryptWireSet,
 	check.CheckerWireSet,

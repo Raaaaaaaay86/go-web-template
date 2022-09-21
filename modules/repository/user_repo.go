@@ -4,6 +4,7 @@ import (
 	"go-web-template/modules/model"
 	"go-web-template/modules/orm/mysql"
 
+	"github.com/google/wire"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,17 @@ type IUserRepository interface {
 
 type UserRepository struct {
 	MySQLGorm mysql.IMySQLGorm
+}
+
+var userRepositorySet = wire.NewSet(
+	wire.Bind(new(IUserRepository), new(UserRepository)),
+	UserRepositoryProvider,
+)
+
+func UserRepositoryProvider(mysqlGorm mysql.IMySQLGorm) UserRepository {
+	return UserRepository{
+		MySQLGorm: mysqlGorm,
+	}
 }
 
 func (ur UserRepository) FindByEmail(email string) (user model.User, tx *gorm.DB) {

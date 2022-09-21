@@ -6,6 +6,6 @@ import (
 	"github.com/google/wire"
 )
 
-var OrmWireSet = wire.NewSet(
+var OrmWireModuleSet = wire.NewSet(
 	mysql.MySQLOrmSet,
 )

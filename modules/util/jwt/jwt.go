@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/wire"
 )
 
 type IJwtManager interface {
@@ -14,6 +15,17 @@ type IJwtManager interface {
 
 type JwtManager struct {
 	signingKey string
+}
+
+var JwtManagerWireSet = wire.NewSet(
+	wire.Bind(new(IJwtManager), new(JwtManager)),
+	JwtManagerProvider,
+)
+
+func JwtManagerProvider() JwtManager {
+	jwtManager := JwtManager{}
+	jwtManager.setSigningKey("ddgdshkafgayaikshyvaksdghvdkasvgasdkyfgaysdjfggdshkafgayaikshyvaksdghvdkasvgasdkyfgaysdjfg")
+	return jwtManager
 }
 
 func (jm JwtManager) Create() (tokenString string, err error) {

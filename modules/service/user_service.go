@@ -11,6 +11,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 )
 
 type IUserService interface {
@@ -24,6 +25,23 @@ type UserService struct {
 	CryptTool      crypt.PasswordCrypt
 	JwtManager     jwt.JwtManager
 	UserRepository repository.UserRepository
+}
+
+var userServiceSet = wire.NewSet(
+	wire.Bind(new(IUserService), new(UserService)),
+	UserServiceProvider,
+)
+
+func UserServiceProvider(
+	cryptTool crypt.PasswordCrypt,
+	jwtManager jwt.JwtManager,
+	userRepository repository.UserRepository,
+) UserService {
+	return UserService{
+		CryptTool:      cryptTool,
+		JwtManager:     jwtManager,
+		UserRepository: userRepository,
+	}
 }
 
 func (us UserService) Login(email, password string) (token string, err error) {

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 )
 
 type IMiddleware interface {
@@ -13,6 +14,17 @@ type IMiddleware interface {
 
 type Middleware struct {
 	JwtManager jwt.IJwtManager
+}
+
+var MiddlewareWireSet = wire.NewSet(
+	wire.Bind(new(IMiddleware), new(Middleware)),
+	MiddlewareProvider,
+)
+
+func MiddlewareProvider(jwtManager jwt.IJwtManager) Middleware {
+	return Middleware{
+		JwtManager: jwtManager,
+	}
 }
 
 func (m Middleware) Verify(ctx *gin.Context) {
