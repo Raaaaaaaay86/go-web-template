@@ -3,14 +3,10 @@ package check
 import "errors"
 
 type IChecker interface {
-	String(values []string, predicate func(str string))
+	String(strings []string, predicate func(str string) bool) error
 }
 
 type Checker struct{}
-
-func CheckerProvider() Checker {
-	return Checker{}
-}
 
 func (c Checker) String(strings []string, predicate func(str string) bool) error {
 	for _, str := range strings {

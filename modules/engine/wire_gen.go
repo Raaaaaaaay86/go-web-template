@@ -26,9 +26,9 @@ import (
 
 func InitGinManager() *GinManager {
 	mySQLGorm := mysql.MySQLGormProvider()
-	jwtManager := jwt.JwtManagerConstructor()
+	jwtManager := jwt.JwtManagerProvider()
 	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
-	passwordCrypt := crypt.PasswordCryptConstructor()
+	passwordCrypt := crypt.PasswordCryptProvider()
 	userRepository := repository.UserRepositoryProvider(mySQLGorm)
 	userService := service.UserServiceProvider(passwordCrypt, jwtManager, userRepository)
 	userController := controller.UserControllerProvider(userService)
