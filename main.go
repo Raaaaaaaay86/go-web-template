@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	_ "go-web-template/docs"
-	"go-web-template/modules/engine"
 	"log"
 	"net/http"
 	"os"
@@ -30,7 +29,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	ginEngine := engine.InitGinManager().GetGinEngine()
+	ginEngine := InitGinManager().GetGinEngine()
 	listenPort := 8080
 
 	server := &http.Server{

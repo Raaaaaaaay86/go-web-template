@@ -4,10 +4,11 @@
 //go:build !wireinject
 // +build !wireinject
 
-package engine
+package main
 
 import (
 	"go-web-template/modules/controller"
+	"go-web-template/modules/engine"
 	"go-web-template/modules/middleware"
 	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/rabbitmq"
@@ -24,7 +25,7 @@ import (
 
 // Injectors from injector.go:
 
-func InitGinManager() *GinManager {
+func InitGinManager() *engine.GinManager {
 	mySQLGorm := mysql.MySQLGormProvider()
 	jwtManager := jwt.JwtManagerProvider()
 	middlewareMiddleware := middleware.MiddlewareProvider(jwtManager)
@@ -38,6 +39,6 @@ func InitGinManager() *GinManager {
 	checker := check.CheckerProvider()
 	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager, checker)
 	rabbitMQController := controller.RabbitMQControllerProvider(rabbitMQService)
-	ginManager := GinManagerProvider(mySQLGorm, middlewareMiddleware, userController, contentController, rabbitMQController)
+	ginManager := engine.GinManagerProvider(mySQLGorm, middlewareMiddleware, userController, contentController, rabbitMQController)
 	return ginManager
 }

@@ -4,12 +4,7 @@ import (
 	_ "go-web-template/docs"
 	"go-web-template/modules/controller"
 	"go-web-template/modules/middleware"
-	"go-web-template/modules/orm"
 	"go-web-template/modules/orm/mysql"
-	"go-web-template/modules/rabbitmq"
-	"go-web-template/modules/repository"
-	"go-web-template/modules/service"
-	"go-web-template/modules/util"
 
 	"github.com/google/wire"
 	swaggerFiles "github.com/swaggo/files"
@@ -33,13 +28,6 @@ type GinManager struct {
 var GinManagerWireSet = wire.NewSet(
 	wire.Bind(new(IGinManager), new(*GinManager)),
 	GinManagerProvider,
-	controller.ControllerWireModuleSet,
-	service.ServiceWireModuleSet,
-	orm.OrmWireModuleSet,
-	util.UtilWireModuleSet,
-	rabbitmq.RabbitMQWireModuleSet,
-	repository.RepositoryWireModuleSet,
-	middleware.MiddlewareWireModuleSet,
 )
 
 func GinManagerProvider(
