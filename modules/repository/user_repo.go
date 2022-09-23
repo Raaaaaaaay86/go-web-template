@@ -10,7 +10,7 @@ import (
 
 //go:generate mockery --dir . --filename mock_user_repo.go --name IUserRepository --output ../mocks
 type IUserRepository interface {
-	FindByEmail(email string) (user model.User, tx *gorm.DB)
+	FindByEmail(email string) (user model.User, err error)
 	Create(user model.User) error
 }
 
@@ -29,9 +29,12 @@ func UserRepositoryProvider(mysqlGorm mysql.IMySQLGorm) UserRepository {
 	}
 }
 
-func (ur UserRepository) FindByEmail(email string) (user model.User, tx *gorm.DB) {
-	tx = ur.MySQLGorm.Get().Where("email = ?", email).Find(&user)
-	return user, tx
+func (ur UserRepository) FindByEmail(email string) (user model.User, err error) {
+	tx := ur.MySQLGorm.Get().Where("email = ?", email).Find(&user)
+	if tx.Error != nil {
+		return user, tx.Error
+	}
+	return user, nil
 }
 
 func (ur UserRepository) Create(user model.User) error {

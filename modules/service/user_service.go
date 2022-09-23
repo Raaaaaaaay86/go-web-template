@@ -45,9 +45,9 @@ func UserServiceProvider(
 }
 
 func (us UserService) Login(email, password string) (token string, err error) {
-	existUser, tx := us.UserRepository.FindByEmail(email)
-	if tx.Error != nil {
-		return "", tx.Error
+	existUser, err := us.UserRepository.FindByEmail(email)
+	if err != nil {
+		return "", err
 	}
 
 	err = us.CryptTool.Verify(existUser.Password, password)
@@ -72,8 +72,8 @@ func (us UserService) Register(registerData dto.RegisterData) (user model.User, 
 		return user, exception.ErrInvalidEmailOrPassword
 	}
 
-	_, tx := us.UserRepository.FindByEmail(registerData.Email)
-	if tx.RowsAffected > 0 {
+	_, err = us.UserRepository.FindByEmail(registerData.Email)
+	if err == nil {
 		return user, exception.ErrEmailAlreadyTaken
 	}
 
