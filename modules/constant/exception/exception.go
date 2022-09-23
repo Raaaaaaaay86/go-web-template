@@ -15,4 +15,5 @@ var (
 	ErrDeclareRabbitMQQueueFailed     = errors.New("declare RabbitMQ queue failed")
 	ErrPublishRabbitMQMessageFailed   = errors.New("publish RabbitMQ message failed")
 	ErrInvalidData                    = errors.New("invalid data format")
+	ErrNotFound                       = errors.New("not found")
 )
