@@ -12,6 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockery --dir . --filename mock_mysql.go --name IMySQLGorm --output ../../mocks
 type IMySQLGorm interface {
 	Get() *gorm.DB
 	CreateMySQLConnection() *gorm.DB

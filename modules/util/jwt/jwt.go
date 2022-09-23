@@ -8,6 +8,8 @@ import (
 	"github.com/google/wire"
 )
 
+
+//go:generate mockery --dir . --filename mock_crypt.go --name IJwtManager --output ../../mocks
 type IJwtManager interface {
 	Create() (token string, err error)
 	Verify(token string) error

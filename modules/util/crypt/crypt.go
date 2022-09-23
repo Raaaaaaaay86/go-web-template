@@ -5,6 +5,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+//go:generate mockery --dir . --filename mock_crypt.go --name IPasswordCrypt --output ../../mocks
 type IPasswordCrypt interface {
 	Encode(password string) (encoded string, err error)
 	Verify(hashedPassword, password string) (err error)

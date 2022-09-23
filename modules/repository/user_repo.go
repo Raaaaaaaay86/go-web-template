@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockery --dir . --filename mock_user_repo.go --name IUserRepository --output ../mocks
 type IUserRepository interface {
 	FindByEmail(email string) (user model.User, tx *gorm.DB)
 	Create(user model.User) error

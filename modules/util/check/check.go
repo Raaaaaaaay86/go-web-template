@@ -6,6 +6,7 @@ import (
 	"github.com/google/wire"
 )
 
+//go:generate mockery --dir . --filename mock_check.go --name IChecker --output ../../mocks
 type IChecker interface {
 	String(strings []string, predicate func(str string) bool) error
 }
