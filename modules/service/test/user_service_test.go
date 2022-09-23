@@ -66,4 +66,25 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, exception.ErrInvalidEmailOrPassword.Error(), err.Error(), "Should return ErrInvalidEmailOrPassword")
 		assert.Empty(t, token, "Token should be empty")
 	})
+
+	t.Run("Exist email with wrong password", func(t *testing.T) {
+		mockUserRepository.On("FindByEmail", registerEmail).
+			Return(
+				model.User{
+					Password: hashedPassword,
+					Email:    registerEmail,
+				},
+				nil,
+			).
+			Once()
+
+		mockPasswordCrypt.On("Verify", hashedPassword, registerPassword).
+			Return(exception.ErrInvalidEmailOrPassword).
+			Once()
+
+		token, err := svc.Login(registerEmail, registerPassword)
+
+		assert.Equal(t, exception.ErrInvalidEmailOrPassword.Error(), err.Error(), "Should return ErrInvalidEmailOrPassword")
+		assert.Empty(t, token, "Token should be empty")
+	})
 }
