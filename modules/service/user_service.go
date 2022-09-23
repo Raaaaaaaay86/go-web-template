@@ -47,12 +47,12 @@ func UserServiceProvider(
 func (us UserService) Login(email, password string) (token string, err error) {
 	existUser, err := us.UserRepository.FindByEmail(email)
 	if err != nil {
-		return "", err
+		return "", exception.ErrInvalidEmailOrPassword
 	}
 
 	err = us.CryptTool.Verify(existUser.Password, password)
 	if err != nil {
-		return "", err
+		return "", exception.ErrInvalidEmailOrPassword 
 	}
 
 	token, err = us.JwtManager.Create()
