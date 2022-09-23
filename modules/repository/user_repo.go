@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/model"
 	"go-web-template/modules/orm/mysql"
 
@@ -32,7 +33,7 @@ func UserRepositoryProvider(mysqlGorm mysql.IMySQLGorm) UserRepository {
 func (ur UserRepository) FindByEmail(email string) (user model.User, err error) {
 	tx := ur.MySQLGorm.Get().Where("email = ?", email).Find(&user)
 	if tx.Error != nil {
-		return user, tx.Error
+		return user, exception.ErrNotFound
 	}
 	return user, nil
 }
