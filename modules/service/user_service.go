@@ -22,9 +22,9 @@ type IUserService interface {
 }
 
 type UserService struct {
-	CryptTool      crypt.PasswordCrypt
-	JwtManager     jwt.JwtManager
-	UserRepository repository.UserRepository
+	CryptTool      crypt.IPasswordCrypt
+	JwtManager     jwt.IJwtManager
+	UserRepository repository.IUserRepository
 }
 
 var userServiceSet = wire.NewSet(
