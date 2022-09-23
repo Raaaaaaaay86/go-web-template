@@ -1,17 +1,21 @@
 package test
 
 import (
-	"fmt"
+	"errors"
+	"go-web-template/modules/constant/exception"
 	"go-web-template/modules/mocks"
 	"go-web-template/modules/model"
 	"go-web-template/modules/service"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLogin(t *testing.T) {
 	registerEmail := "newUser@gmail.com"
 	registerPassword := "strongPassword"
-	generateToken := "thisIsValidToken"
+	hashedPassword := "anyPossibleHash"
+	expectedToken := "thisIsValidToken"
 
 	mockPasswordCrypt := mocks.NewIPasswordCrypt(t)
 	mockJwtManager := mocks.NewIJwtManager(t)
