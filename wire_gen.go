@@ -12,6 +12,7 @@ import (
 	"go-web-template/modules/middleware"
 	"go-web-template/modules/orm/mysql"
 	"go-web-template/modules/rabbitmq"
+	"go-web-template/modules/redis"
 	"go-web-template/modules/repository"
 	"go-web-template/modules/service"
 	"go-web-template/modules/util/check"
@@ -34,7 +35,10 @@ func InitGinManager() *engine.GinManager {
 	userService := service.UserServiceProvider(passwordCrypt, jwtManager, userRepository)
 	userController := controller.UserControllerProvider(userService)
 	contentService := service.ContentServiceProvider()
-	contentController := controller.ContentControllerProvider(contentService)
+	redisManager := redis.RedisManagerProvider()
+	redisTimeoutDuration := redis.RedisTimeoutDurationProvider()
+	redisTemplate := redis.RedisTemplateProvider(redisManager, redisTimeoutDuration)
+	contentController := controller.ContentControllerProvider(contentService, redisTemplate)
 	rabbitMQManager := rabbitmq.RabbitMQManagerProvider()
 	checker := check.CheckerProvider()
 	rabbitMQService := service.RabbitMQServiceProvider(rabbitMQManager, checker)
