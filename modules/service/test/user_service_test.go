@@ -52,4 +52,18 @@ func TestLogin(t *testing.T) {
 
 		assert.Equal(t, expectedToken, token, "Output token is equal to mock token")
 	})
+
+	t.Run("Not exist email", func(t *testing.T) {
+		mockUserRepository.On("FindByEmail", registerEmail).
+			Return(
+				model.User{},
+				errors.New(""),
+			).
+			Once()
+
+		token, err := svc.Login(registerEmail, registerPassword)
+
+		assert.Equal(t, exception.ErrInvalidEmailOrPassword.Error(), err.Error(), "Should return ErrInvalidEmailOrPassword")
+		assert.Empty(t, token, "Token should be empty")
+	})
 }
