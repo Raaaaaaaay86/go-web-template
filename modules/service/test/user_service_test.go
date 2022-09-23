@@ -26,25 +26,5 @@ func TestLogin(t *testing.T) {
 		UserRepository: mockUserRepository,
 	}
 
-	hashedPassword := "anyPossibleHash"
-	mockUserRepository.On("FindByEmail", registerEmail).
-		Return(
-			model.User{
-				Password: hashedPassword,
-				Email:    registerEmail,
-			},
-			nil,
-		)
 
-	mockPasswordCrypt.On("Verify", hashedPassword, registerPassword).
-		Return(nil)
-
-	mockJwtManager.On("Create").
-		Return(generateToken, nil)
-
-	token, err := svc.Login(registerEmail, registerPassword)
-	if err != nil {
-	}
-
-	fmt.Println(token)
 }
