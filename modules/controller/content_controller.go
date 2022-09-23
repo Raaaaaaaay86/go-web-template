@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"go-web-template/modules/redis"
 	"go-web-template/modules/service"
 	"net/http"
 
@@ -14,6 +15,7 @@ type IContentController interface {
 
 type ContentController struct {
 	ContentService service.IContentService
+	RedisTemplate  redis.IRedisTemplate
 }
 
 var contentControllerSet = wire.NewSet(
@@ -21,9 +23,10 @@ var contentControllerSet = wire.NewSet(
 	ContentControllerProvider,
 )
 
-func ContentControllerProvider(contentService service.IContentService) ContentController {
+func ContentControllerProvider(contentService service.IContentService, redisTemplate redis.IRedisTemplate) ContentController {
 	return ContentController{
 		ContentService: contentService,
+		RedisTemplate: redisTemplate,
 	}
 }
 
@@ -36,9 +39,13 @@ func ContentControllerProvider(contentService service.IContentService) ContentCo
 // @Security     ApiKeyAuth
 // @Router       /content/random [get]
 func (cc ContentController) RandomContent(ctx *gin.Context) {
+	randomContent := cc.ContentService.RandomContent()
+
+	cc.RedisTemplate.Set("hello", randomContent, redis.DefaultExpiration)
+
 	ctx.String(
 		http.StatusOK,
 		"%s",
-		cc.ContentService.RandomContent(),
+		randomContent,
 	)
 }
