@@ -99,14 +99,13 @@ func (us UserService) Register(registerData dto.RegisterData) (user model.User, 
 }
 
 func (us UserService) Verify(token string) error {
-	acceptTokenHead := "Bearer "
-	tokenType := token[0:len(acceptTokenHead)]
+	bearer := "Bearer" + " "
 
-	if tokenType != acceptTokenHead {
+	if token[0:len(bearer)] != bearer {
 		return exception.ErrInvalidJWT
 	}
 
-	err := us.JwtManager.Verify(token[len(acceptTokenHead):])
+	err := us.JwtManager.Verify(token[len(bearer):])
 	if err != nil {
 		return exception.ErrInvalidJWT
 	}
